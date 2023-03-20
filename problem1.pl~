@@ -30,10 +30,3 @@ friend(lamia, zainab).
 friend(zainab, rokaya).
 friend(zainab, eman).
 friend(eman, laila).
-
-friendList(X, L) :-
-    findall(Y, friend(X, Y), L).
-
-
-
-
