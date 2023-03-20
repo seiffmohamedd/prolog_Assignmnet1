@@ -28,6 +28,8 @@ friend(zainab, rokaya).
 friend(zainab, eman).
 friend(eman, laila).
 
+member(X, [Y|T]) :- X = Y; member(X, T).
+
 #Task 1:
 is_friend(X, Y) :-
     friend(X, Y).
@@ -54,20 +56,16 @@ friendListCount(_, Count, Count).
 
 #Task 4:
 
-peopleYouMayKnow(Person, SuggestedFriends) :-
-    findall(Friend, suggestFriend(Person, Friend), SuggestedFriends).
+mutualFriend(X, Y) :-
+    friendship(X, Z),
+    friendship(Y, Z),
+    X \= Y.
 
-suggestFriend(Person, Friend) :-
-    friend(Person, X),
-    friend(Friend, X),
-    not(friend(Person, Friend)),
-    Person \= Friend.
-
-peopleYouMayKnow(Person, [SuggestedFriend|Rest]) :-
-    suggestFriend(Person, SuggestedFriend),
-    not(member(SuggestedFriend, Rest)),
-    peopleYouMayKnow(Person, Rest).
-peopleYouMayKnow(_, []).
+peopleYouMayKnow(Person, Friend) :-
+    # Find all the people who have at least one mutual friend with the given person.
+    mutualFriend(Person, Friend),
+    # Check if the suggested friend is not already a friend of the given person.
+    \+ friendship(Person, Friend).
 
 
 #Task 5
@@ -125,7 +123,7 @@ peopleYouMayKnow_indirect(Person, Friend) :-
     \+ Person = F2,
     peopleYouMayKnow_indirect(F2, Friend),
     \+ friendOf(Person, Friend),
-    \+ Person = Friend.
+    \+ Person = Friend. 
 
 
 
