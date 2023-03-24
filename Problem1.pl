@@ -30,45 +30,35 @@ friend(eman, laila).
 
 member(X, [Y|T]) :- X = Y; member(X, T).
 
-#Task 1:
+%Task 1:
 is_friend(X, Y) :-
     friend(X, Y).
 is_friend(X, Y) :-
     friend(Y, X).
 
 
-# Task 2:
-friendList(Person, []) :- \+ friend(Person, _).
-friendList(Person, [Friend|Rest]) :-
-    friend(Person, Friend),
-    friendList(Person, Rest).
+% Task 2:
+friendList(X, L) :-
+    findall(Y, friend(X, Y), L).
+
+%Task 3:
+%friendListCount(Person, Count) :- friendListCount(Person, 0, Count).
+
+%friendListCount(Person, Acc, Count) :-
+    %friend(Person, Friend),
+    %NewAcc is Acc + 1,
+    %friendListCount(Friend, NewAcc, Count).
 
 
-# Task 3:
-friendListCount(Person, Count) :- friendListCount(Person, 0, Count).
 
-friendListCount(Person, Acc, Count) :-
-    friend(Person, Friend),
-    NewAcc is Acc + 1,
-    friendListCount(Friend, NewAcc, Count).
-    
-friendListCount(_, Count, Count).
+%Task 4
 
-#Task 4:
-
-mutualFriend(X, Y) :-
-    friendship(X, Z),
-    friendship(Y, Z),
-    X \= Y.
-
-peopleYouMayKnow(Person, Friend) :-
-    # Find all the people who have at least one mutual friend with the given person.
-    mutualFriend(Person, Friend),
-    # Check if the suggested friend is not already a friend of the given person.
-    \+ friendship(Person, Friend).
+peopleYouMayKnow(X, Y):-
+    is_friend(Z, X),
+    is_friend(Z, Y),X\==Y.
 
 
-#Task 5
+%Task 5
 peopleYouMayKnow(Person, N, SuggestedFriend) :-
     friendList(Person, Friends),
     findSuggestedFriend(Person, N, Friends, SuggestedFriend).
@@ -84,7 +74,7 @@ findSuggestedFriend(Person, N, [Friend|Rest], SuggestedFriend) :-
 findSuggestedFriend(Person, N, [_|Rest], SuggestedFriend) :-
     findSuggestedFriend(Person, N, Rest, SuggestedFriend).
 
-# Task 6
+%Task 6
 
 peopleYouMayKnowList(Person, List) :-
     findPossibleFriends(Person, [], Friends),
@@ -106,7 +96,7 @@ removeDuplicates([H|T], Acc, List) :-
     \+ member(H, Acc),
     removeDuplicates(T, [H|Acc], List).
 
-# Task7
+% Task7
 peopleYouMayKnow_indirect(Person, Friend) :-
     friendOf(Person, F1),
     friendOf(F1, F2),
@@ -115,7 +105,7 @@ peopleYouMayKnow_indirect(Person, Friend) :-
     friendOf(F2, Friend),
     \+ friendOf(Person, Friend),
     \+ Person = Friend.
-    
+
 peopleYouMayKnow_indirect(Person, Friend) :-
     friendOf(Person, F1),
     friendOf(F1, F2),
@@ -123,7 +113,7 @@ peopleYouMayKnow_indirect(Person, Friend) :-
     \+ Person = F2,
     peopleYouMayKnow_indirect(F2, Friend),
     \+ friendOf(Person, Friend),
-    \+ Person = Friend. 
+    \+ Person = Friend.
 
 
 
