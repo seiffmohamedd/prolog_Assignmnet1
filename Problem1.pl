@@ -42,13 +42,18 @@ friendList(X, L) :-
     findall(Y, friend(X, Y), L).
 
 %Task 3:
-%friendListCount(Person, Count) :- friendListCount(Person, 0, Count).
-
-%friendListCount(Person, Acc, Count) :-
-    %friend(Person, Friend),
-    %NewAcc is Acc + 1,
-    %friendListCount(Friend, NewAcc, Count).
-
+friendListCount([],0).
+friendListCount([_|T], N):-
+    friendListCount(T,NN),
+    N is NN+1.
+%this task is done when we can pass arguments as name not list
+%
+% Task 3 part 2:
+% friendListCount([],0).
+%
+% friendListCount([_|T], N):-
+% friendListCount(T,NN),
+%  N is NN+1.
 
 
 %Task 4
