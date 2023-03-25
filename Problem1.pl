@@ -26,22 +26,53 @@ friend(zainab, rokaya).
 friend(zainab, eman).
 friend(eman, laila).
 
-member(X, [Y|T]) :- X = Y; member(X, T).
 
-%Task 1:
+%____________________________________TASK 1_______________________________________
+
+
 is_friend(X, Y) :-
     friend(X, Y).
 is_friend(X, Y) :-
     friend(Y, X).
 
 
-% Task 2:
+%____________________________________TASK 2_______________________________________
 
 
+ member(X, [Y|T]) :- X = Y; member(X, T).
 
-%Task 4
+friendList(Person, FriendList) :-
+    find_friends(Person, [], FriendList).
+
+find_friends(Person, List, FriendList) :-
+    is_friend(Person, Friend),
+    \+ member(Friend, List),
+    find_friends(Person, [Friend|List], FriendList).
+find_friends(_, FriendList, FriendList).
+
+
+%____________________________________TASK 3_______________________________________
+
+
+friendListCount(Person, N):-
+    friendList(Person,List),
+    counthelper(List,0,N).
+
+
+counthelper([],Count,Count).
+
+
+counthelper([_|T],N,Count):-
+    N1 is N+1,
+    counthelper(T,N1,Count).
+
+
+%____________________________________TASK 4_______________________________________
+
+
 
 peopleYouMayKnow(X, Y):-
     is_friend(Z, X),
     is_friend(Z, Y),X\==Y.
+
 
