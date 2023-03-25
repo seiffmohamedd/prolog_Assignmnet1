@@ -71,7 +71,7 @@ count_all_people(L,X,Y):-
 	counter(L,X,Y).
 
 people_counter(X,Y,Z):-
-	peopleList(X, L),
+	peoplelist(X, L),
 	count_all_people(L,Y,Z).
 
 peopleList(X, L):-
