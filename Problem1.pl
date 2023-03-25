@@ -1,5 +1,3 @@
-
-
 friend(ahmed, samy).
 friend(ahmed, fouad).
 friend(samy, mohammed).
