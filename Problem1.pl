@@ -35,18 +35,17 @@ is_friend(X, Y) :-
 is_friend(X, Y) :-
     friend(Y, X).
 
-% myMember(X, [X|,_].
-% myMember(X, [_|Y]):- myMember(X, Y)
 
 
 % Task 2:
- member(X, [Y|T]) :- X = Y; member(X, T).
 
 %task2 part1
 %friendList(X, L) :-
     %findall(Y, friend(X, Y), L).
 
 %task2 prt2
+
+member(X, [Y|T]) :- X = Y; member(X, T).
 friendList(Person, FriendList) :-
     find_friends(Person, [], FriendList).
 
@@ -80,21 +79,65 @@ peopleYouMayKnow(X, Y):-
     is_friend(Z, Y),X\==Y.
 
 
-%Task 5
-peopleYouMayKnow(Person, N, SuggestedFriend) :-
-    friendList(Person, Friends),
-    findSuggestedFriend(Person, N, Friends, SuggestedFriend).
+%task 5
 
-findSuggestedFriend(_, _, [], _) :-
-    fail.
-findSuggestedFriend(Person, N, [Friend|Rest], SuggestedFriend) :-
-    friendListCount(Friend, Count),
-    Count >= N,
-    \+ friend(Friend, Person),
-    \+ member(Friend, Rest),
-    SuggestedFriend = Friend.
-findSuggestedFriend(Person, N, [_|Rest], SuggestedFriend) :-
-    findSuggestedFriend(Person, N, Rest, SuggestedFriend).
+% check if two lists have at least N common elements
+haveNCommonElements(_, _, N) :- N =< 0, !.
+haveNCommonElements([], _, _) :- fail.
+haveNCommonElements([H|T], L2, N) :-
+    (   member(H, L2)
+    ->  N1 is N - 1, haveNCommonElements(T, L2, N1)
+    ;   haveNCommonElements(T, L2, N)
+    ).
+
+% find a friend suggestion for a person
+peopleYouMayKnow(Person, N, Suggestion) :-
+    friend(Person, Friend1),
+    friend(Person, Friend2),
+    Friend1 \= Friend2, % make sure they are not the same friend
+    friend(Friend1, Suggestion), % potential friend suggestion
+    Suggestion \= Person, % make sure they are not already a friend
+    Suggestion \= Friend1, % make sure they are not a mutual friend
+    Suggestion \= Friend2, % make sure they are not a mutual friend
+    findall(MutualFriend, (friend(Friend1, MutualFriend), friend(Friend2, MutualFriend)), MutualFriends),
+    haveNCommonElements(MutualFriends, [Suggestion], N).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%Task 5
+% peopleYouMayKnow(Person, N, SuggestedFriend) :-
+    %friendList(Person, Friends),
+    %findSuggestedFriend(Person, N, Friends, SuggestedFriend).
+
+%findSuggestedFriend(_, _, [], _) :-
+ %   fail.
+%findSuggestedFriend(Person, N, [Friend|Rest], SuggestedFriend) :-
+ %   friendListCount(Friend, Count),
+  %  Count >= N,
+   % \+ friend(Friend, Person),
+    %\+ member(Friend, Rest),
+    %SuggestedFriend = Friend.
+%findSuggestedFriend(Person, N, [_|Rest], SuggestedFriend) :-
+ %   findSuggestedFriend(Person, N, Rest, SuggestedFriend).
 
 %Task 6
 
@@ -139,3 +182,7 @@ peopleYouMayKnow_indirect(Person, Friend) :-
 
 
 
+factorial(1,1).
+factorial(N,Result) :- NewN is N-1,
+factorial(NewN,NewResult),
+ Result is N * NewResult.

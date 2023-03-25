@@ -35,24 +35,23 @@ is_friend(X, Y) :-
 is_friend(X, Y) :-
     friend(Y, X).
 
-% myMember(X, [X|,_].
-% myMember(X, [_|Y]):- myMember(X, Y)
 
 
 % Task 2:
- member(X, [Y|T]) :- X = Y; member(X, T).
 
 %task2 part1
 %friendList(X, L) :-
     %findall(Y, friend(X, Y), L).
 
 %task2 prt2
+
+member(X, [Y|T]) :- X = Y; member(X, T).
 friendList(Person, FriendList) :-
     find_friends(Person, [], FriendList).
 
  %Define the helper predicate to find all friends of a person
 find_friends(Person, Acc, FriendList) :-
-    friend(Person, Friend),
+    is_friend(Person, Friend),
     \+ member(Friend, Acc),
     find_friends(Person, [Friend|Acc], FriendList).
 find_friends(_, FriendList, FriendList).
@@ -139,3 +138,7 @@ peopleYouMayKnow_indirect(Person, Friend) :-
 
 
 
+factorial(1,1).
+factorial(N,Result) :- NewN is N-1,
+factorial(NewN,NewResult),
+ Result is N * NewResult.
