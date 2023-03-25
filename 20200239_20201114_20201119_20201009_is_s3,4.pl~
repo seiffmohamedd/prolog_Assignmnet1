@@ -54,21 +54,19 @@ peopleYouMayKnow(X, Y):-
 
 % ____________________________________TASK 5______________________________________
 
-peopleYouMayKnow(X, N, Y):-
+peopleYouMayKnow(X, Num, Y):-
 	people_counter(X,Y,Z),
-	N =:= Z.
+	Num =:= Z.
 
 
-counter([],_,0).
-counter([X|T],X,Y):-
-	counter(T,X,Z), Y is Z +1.
-counter([X1|T],X,Z):-
+theCounter([],_,0).
+theCounter([X|T],X,Y):-
+	theCounter(T,X,Z), Y is Z +1.
+
+theCounter([X1|T],X,Z):-
 	X1\=X,
-	counter(T,X,Z).
+	theCounter(T,X,Z).
 
-count_all_people(L,X,Y):-
-	member(X,L),
-	counter(L,X,Y).
 
 people_counter(X,Y,Z):-
 	peopleList(X, L),
@@ -76,6 +74,10 @@ people_counter(X,Y,Z):-
 
 peopleList(X, L):-
 	findall(Y, peopleYouMayKnow(X, Y), L).
+
+count_all_people(L,X,Y):-
+	member(X,L),
+	theCounter(L,X,Y).
 
 
 
