@@ -28,7 +28,6 @@ friend(zainab, rokaya).
 friend(zainab, eman).
 friend(eman, laila).
 
-member(X, [Y|T]) :- X = Y; member(X, T).
 
 %Task 1:
 is_friend(X, Y) :-
@@ -36,13 +35,31 @@ is_friend(X, Y) :-
 is_friend(X, Y) :-
     friend(Y, X).
 
+% myMember(X, [X|,_].
+% myMember(X, [_|Y]):- myMember(X, Y)
+
 
 % Task 2:
-friendList(X, L) :-
-    findall(Y, friend(X, Y), L).
+ member(X, [Y|T]) :- X = Y; member(X, T).
+
+%task2 part1
+%friendList(X, L) :-
+    %findall(Y, friend(X, Y), L).
+
+%task2 prt2
+friendList(Person, FriendList) :-
+    find_friends(Person, [], FriendList).
+
+ %Define the helper predicate to find all friends of a person
+find_friends(Person, Acc, FriendList) :-
+    is_friend(Person, Friend),
+    \+ member(Friend, Acc),
+    find_friends(Person, [Friend|Acc], FriendList).
+find_friends(_, FriendList, FriendList).
 
 %Task 3:
 friendListCount([],0).
+
 friendListCount([_|T], N):-
     friendListCount(T,NN),
     N is NN+1.
